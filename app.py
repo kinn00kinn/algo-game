@@ -4,7 +4,7 @@ from game_logic.algo_game import AlgoGame
 from game_logic.player import Player
 
 app = Flask(__name__)
-app.run(host="10.240.0.1:8099/~hi20a-nishimura/algo-game", debug=False)
+app.run(host="0.0.0.0:8099/~hi20a-nishimura/algo-game", debug=False)
 app.config['SECRET_KEY'] = 'your-secret-key'
 socketio = SocketIO(app, 
                    async_mode='threading',
