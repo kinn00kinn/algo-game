@@ -4,12 +4,17 @@ from game_logic.algo_game import AlgoGame
 from game_logic.player import Player
 
 app = Flask(__name__)
-app.run(host="0.0.0.0:8099/~hi20a-nishimura/algo-game", debug=False)
 app.config['SECRET_KEY'] = 'your-secret-key'
+app.config['APPLICATION_ROOT'] = '/~hi20a-nishimura/algo-game'
+
+from werkzeug.middleware.proxy_fix import ProxyFix
+app.wsgi_app = ProxyFix(app.wsgi_app)
+
 socketio = SocketIO(app, 
                    async_mode='threading',
                    cors_allowed_origins="*",
-                   websocket=True)
+                   websocket=True,
+                   path='/~hi20a-nishimura/algo-game/socket.io')
 
 games = {}
 player_rooms = {}
@@ -100,6 +105,8 @@ def player_b():
 
 if __name__ == '__main__':
     socketio.run(app, 
+                host='0.0.0.0',
+                port=8099,
                 debug=True, 
                 allow_unsafe_werkzeug=True,
                 use_reloader=False)
