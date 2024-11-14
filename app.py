@@ -5,7 +5,10 @@ from game_logic.player import Player
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key'
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, 
+                   async_mode='threading',
+                   cors_allowed_origins="*",
+                   websocket=True)
 
 games = {}
 player_rooms = {}
@@ -93,4 +96,7 @@ def player_b():
     return render_template('player_b.html')
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, 
+                debug=True, 
+                allow_unsafe_werkzeug=True,
+                use_reloader=False)
